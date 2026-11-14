@@ -37,6 +37,9 @@ button{cursor:pointer}
 .bottom-nav button span{display:block;font-size:20px;margin-bottom:3px}
 .bottom-nav button.active{color:#17365d;font-weight:bold}
 .stat-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #edf0f4;font-size:14px}
+html, body {
+  overscroll-behavior-y: none;
+}
 </style>
 </head>
 <body>
@@ -226,8 +229,13 @@ function judge(){
   },100);
 }
 function nextQuestion(){
-position++;
-showQuestion();
+  position++;
+  showQuestion();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 function toggleFavorite(){
 const q=currentQuestion;
