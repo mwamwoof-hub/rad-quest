@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#17365d">
+<link rel="manifest" href="./manifest.json">
 <title>RAD-QUEST</title>
 <style>
 *{box-sizing:border-box}
@@ -126,6 +127,17 @@ document.getElementById("content").innerHTML=
 "<h2>学習成績</h2><p>回答数："+n+"問</p><p>正解数："+correct+"問</p><p>正答率："+(n?Math.round(correct/n*100):0)+"%</p>";
 }
 update();
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.error("登録失敗:", error));
+  });
+}
+</script>
+</body>
+</html>
+
 </script>
 </body>
 </html>
