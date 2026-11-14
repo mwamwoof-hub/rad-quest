@@ -63,6 +63,7 @@ nav button{border:0;background:none;color:#17365d;font-size:12px}
 <button onclick="showReview()">🔁<br>復習</button>
 <button onclick="showStats()">📊<br>成績</button>
 </nav>
+<script src="./questions.js"></script>
 <script>
 const sample={
 q:"【動作確認用サンプル】放射線の吸収線量の単位はどれか。",
@@ -128,7 +129,8 @@ document.getElementById("content").innerHTML=
 "<h2>学習成績</h2><p>回答数："+n+"問</p><p>正解数："+correct+"問</p><p>正答率："+(n?Math.round(correct/n*100):0)+"%</p>";
 }
 update();
-  <script>
+</script>
+<script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js")
