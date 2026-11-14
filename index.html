@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17365d">
+<title>RAD-QUEST</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f5f9;color:#202b3c;font-family:sans-serif}
+header{background:#17365d;color:white;padding:22px 18px}
+header h1{margin:0;font-size:24px}
+header p{margin:7px 0 0;font-size:13px}
+main{padding:16px;max-width:650px;margin:auto}
+.card{background:white;padding:18px;border-radius:14px;margin-bottom:14px;box-shadow:0 2px 9px #0000000b}
+h2{font-size:18px;margin-top:0}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu button{padding:19px 8px;border:0;border-radius:12px;background:#eaf0f8;color:#17365d;font-weight:bold;font-size:15px}
+button{cursor:pointer}
+.primary{background:#17365d;color:white;border:0;border-radius:9px;padding:13px;width:100%;font-size:15px}
+.option{display:block;width:100%;text-align:left;padding:14px;margin:9px 0;border:1px solid #dce2eb;border-radius:9px;background:white}
+.option.selected{border:2px solid #2875c7;background:#edf5ff}
+nav{display:flex;justify-content:space-around;background:white;padding:14px;position:sticky;bottom:0}
+nav button{border:0;background:none;color:#17365d;font-size:12px}
+.small{font-size:12px;color:#68758a}
+</style>
+</head>
+<body>
+<header>
+<h1>RAD-QUEST</h1>
+<p>診療放射線技師 国家試験対策</p>
+</header>
+<main id="app">
+<section class="card">
+<h2>学習ホーム</h2>
+<p>国家試験合格を目指そう！</p>
+<p id="total">回答数：0問</p>
+<p id="rate">正答率：0%</p>
+</section>
+<section class="card">
+<h2>演習メニュー</h2>
+<div class="menu">
+<button onclick="showQuiz()">📝 通常演習</button>
+<button onclick="showYears()">📚 年度別演習</button>
+<button onclick="showQuiz()">⏱ 模擬試験</button>
+<button onclick="showReview()">🔁 間違い復習</button>
+<button onclick="showReview()">⭐ お気に入り</button>
+<button onclick="showStats()">📊 学習成績</button>
+</div>
+</section>
+<section class="card" id="content">
+<h2>ようこそ！</h2>
+<p>演習メニューから学習を始めよう。</p>
+<p class="small">現在は動作確認用のサンプル版です。</p>
+</section>
+</main>
+<nav>
+<button onclick="home()">🏠<br>ホーム</button>
+<button onclick="showQuiz()">📝<br>演習</button>
+<button onclick="showReview()">🔁<br>復習</button>
+<button onclick="showStats()">📊<br>成績</button>
+</nav>
+<script>
+const sample={
+q:"【動作確認用サンプル】放射線の吸収線量の単位はどれか。",
+a:["ベクレル","グレイ","シーベルト","クーロン","カンデラ"],
+correct:1,
+ex:"吸収線量の単位はグレイ（Gy）です。"
+};
+let selected=-1;
+let questions=JSON.parse(localStorage.getItem("rq_questions")||"[]");
+let mistakes=JSON.parse(localStorage.getItem("rq_mistakes")||"[]");
+function save(){
+localStorage.setItem("rq_questions",JSON.stringify(questions));
+localStorage.setItem("rq_mistakes",JSON.stringify(mistakes));
+update();
+}
+function update(){
+let n=questions.length;
+let correct=questions.filter(x=>x.ok).length;
+document.getElementById("total").textContent="回答数："+n+"問";
+document.getElementById("rate").textContent="正答率："+(n?Math.round(correct/n*100):0)+"%";
+}
+function home(){
+document.getElementById("content").innerHTML=
+"<h2>学習ホーム</h2><p>演習メニューから学習を始めよう！</p>";
+}
+function showQuiz(){
+selected=-1;
+let c=document.getElementById("content");
+c.innerHTML="<h2>通常演習</h2><p class='small'>サンプル問題・本番データではありません</p><p>"+sample.q+"</p><div id='opts'></div><button class='primary' onclick='judge()'>回答する</button><div id='result'></div>";
+sample.a.forEach((a,i)=>{
+let b=document.createElement("button");
+b.className="option";
+b.textContent=(i+1)+". "+a;
+b.onclick=()=>{
+selected=i;
+document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
+b.classList.add("selected");
+};
+document.getElementById("opts").appendChild(b);
+});
+}
+function judge(){
+if(selected<0){alert("選択肢を選んでね");return}
+let ok=selected===sample.correct;
+questions.push({ok});
+if(!ok)mistakes.push(sample);
+save();
+document.getElementById("result").innerHTML=
+"<h3>"+(ok?"正解！":"不正解")+"</h3><p>正解："+sample.a[sample.correct]+"</p><p>"+sample.ex+"</p><button class='primary' onclick='showQuiz()'>もう一度演習</button>";
+}
+function showYears(){
+document.getElementById("content").innerHTML=
+"<h2>年度別演習</h2><p>収録予定：第69回〜第78回</p><p>過去問データはこれから追加します。</p>";
+}
+function showReview(){
+document.getElementById("content").innerHTML=
+"<h2>間違い復習</h2><p>間違えた問題："+mistakes.length+"問</p><p>復習用問題データを追加予定です。</p>";
+}
+function showStats(){
+let n=questions.length;
+let correct=questions.filter(x=>x.ok).length;
+document.getElementById("content").innerHTML=
+"<h2>学習成績</h2><p>回答数："+n+"問</p><p>正解数："+correct+"問</p><p>正答率："+(n?Math.round(correct/n*100):0)+"%</p>";
+}
+update();
+</script>
+</body>
+</html>
