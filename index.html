@@ -188,25 +188,42 @@ const b=document.getElementById("choice"+n);
 if(b)b.classList.toggle("selected",n===i);
 });
 }
+
 function judge(){
-if(selected<0){alert("選択肢を選んでください");return;}
-const q=currentQuestion;
-const correct=selected===Number(q.answer);
-const h=read("rq_history");
-h.push({id:q.id,correct:correct});
-save("rq_history",h);
-let mistakes=read("rq_mistakes");
-if(correct)mistakes=mistakes.filter(id=>id!==q.id);
-else if(!mistakes.includes(q.id))mistakes.push(q.id);
-save("rq_mistakes",mistakes);
-document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
-document.getElementById("answerButton").disabled=true;
-document.getElementById("result").innerHTML=
-`<h3>${correct?"正解！":"不正解"}</h3>
-<p>正解：${Number(q.answer)+1}. ${esc(q.choices[q.answer])}</p>
-<p>${esc(q.explanation||"解説はありません。")}</p>
-<button class="action" onclick="nextQuestion()">次の問題へ</button>`;
-updateHome();
+  if(selected<0){
+    alert("選択肢を選んでください");
+    return;
+  }
+
+  const q=currentQuestion;
+  const correct=selected===Number(q.answer);
+
+  const h=read("rq_history");
+  h.push({id:q.id,correct:correct});
+  save("rq_history",h);
+
+  let mistakes=read("rq_mistakes");
+  if(correct) mistakes=mistakes.filter(id=>id!==q.id);
+  else if(!mistakes.includes(q.id)) mistakes.push(q.id);
+  save("rq_mistakes",mistakes);
+
+  document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
+  document.getElementById("answerButton").disabled=true;
+
+  document.getElementById("result").innerHTML=
+  `<h3>${correct?"正解！":"不正解"}</h3>
+  <p>正解：${Number(q.answer)+1}. ${esc(q.choices[q.answer])}</p>
+  <p>${esc(q.explanation||"解説はありません。")}</p>
+  <button class="action" onclick="nextQuestion()">次の問題へ</button>`;
+
+  updateHome();
+
+  setTimeout(()=>{
+    document.getElementById("result").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  },100);
 }
 function nextQuestion(){
 position++;
