@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<link rel="manifest" href="./manifest.json">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#17365d">
@@ -10,22 +9,20 @@
 <title>RAD-QUEST</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f5f9;color:#202b3c;font-family:sans-serif}
-header{background:#17365d;color:white;padding:22px 18px}
-header h1{margin:0;font-size:24px}
+body{margin:0;background:#f3f5f9;color:#243247;font-family: sans-serif}
+header{background:#17365d;color:white;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:26px}
 header p{margin:7px 0 0;font-size:13px}
-main{padding:16px;max-width:650px;margin:auto}
-.card{background:white;padding:18px;border-radius:14px;margin-bottom:14px;box-shadow:0 2px 9px #0000000b}
-h2{font-size:18px;margin-top:0}
-.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.menu button{padding:19px 8px;border:0;border-radius:12px;background:#eaf0f8;color:#17365d;font-weight:bold;font-size:15px}
-button{cursor:pointer}
-.primary{background:#17365d;color:white;border:0;border-radius:9px;padding:13px;width:100%;font-size:15px}
-.option{display:block;width:100%;text-align:left;padding:14px;margin:9px 0;border:1px solid #dce2eb;border-radius:9px;background:white}
-.option.selected{border:2px solid #2875c7;background:#edf5ff}
-nav{display:flex;justify-content:space-around;background:white;padding:14px;position:sticky;bottom:0}
-nav button{border:0;background:none;color:#17365d;font-size:12px}
-.small{font-size:12px;color:#68758a}
+main{max-width:650px;margin:auto;padding:16px}
+.card{background:white;border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px #0001}
+button{border:0;border-radius:9px;padding:13px;background:#17365d;color:white;font-size:15px;width:100%;margin:5px 0;cursor:pointer}
+button.secondary{background:#e7edf5;color:#17365d}
+button:disabled{opacity:.5}
+.choice{background:#edf1f6;color:#243247;text-align:left}
+.choice.selected{background:#d4e8f5;outline:2px solid #2877a8}
+.small{font-size:13px;color:#64748b}
+#result{line-height:1.7}
+img.question-image{max-width:100%;height:auto;display:block;margin:12px auto}
 </style>
 </head>
 <body>
@@ -33,164 +30,169 @@ nav button{border:0;background:none;color:#17365d;font-size:12px}
 <h1>RAD-QUEST</h1>
 <p>診療放射線技師 国家試験対策</p>
 </header>
-<main id="app">
-<section class="card">
-<h2>学習ホーム</h2>
-<p>国家試験合格を目指そう！</p>
-<p id="total">回答数：0問</p>
-<p id="rate">正答率：0%</p>
+<main>
+<section id="home" class="card">
+<h2>学習メニュー</h2>
+<button onclick="startQuiz()">通常演習</button>
+<button class="secondary" onclick="showYears()">年度別演習</button>
+<button class="secondary" onclick="showReview()">間違い復習</button>
+<button class="secondary" onclick="showFavorites()">お気に入り</button>
+<button class="secondary" onclick="showStats()">学習成績</button>
+<button class="secondary" onclick="startQuiz()">模擬試験（準備中・通常演習）</button>
+<p class="small">※現在は動作確認用のサンプル問題を含みます。実際の国家試験問題はまだ収録されていません。</p>
 </section>
-<section class="card">
-<h2>演習メニュー</h2>
-<div class="menu">
-<button onclick="showQuiz()">📝 通常演習</button>
-<button onclick="showYears()">📚 年度別演習</button>
-<button onclick="showQuiz()">⏱ 模擬試験</button>
-<button onclick="showReview()">🔁 間違い復習</button>
-<button onclick="showReview()">⭐ お気に入り</button>
-<button onclick="showStats()">📊 学習成績</button>
-</div>
-</section>
-<section class="card" id="content">
-<h2>ようこそ！</h2>
-<p>演習メニューから学習を始めよう。</p>
-<p class="small">現在は動作確認用のサンプル版です。</p>
-</section>
+
+<section id="screen" class="card" hidden></section>
 </main>
-<nav>
-<button onclick="home()">🏠<br>ホーム</button>
-<button onclick="showQuiz()">📝<br>演習</button>
-<button onclick="showReview()">🔁<br>復習</button>
-<button onclick="showStats()">📊<br>成績</button>
-</nav>
+
 <script src="./questions.js"></script>
 <script>
-const sample={
-q:"【動作確認用サンプル】放射線の吸収線量の単位はどれか。",
-a:["ベクレル","グレイ","シーベルト","クーロン","カンデラ"],
-correct:1,
-ex:"吸収線量の単位はグレイ（Gy）です。"
-};
+const sampleQuestions=[{
+id:"sample-001",year:2025,session:"サンプル",number:1,
+field:"基礎医学",
+question:"【動作確認用】人体で血液を全身に送り出す臓器はどれか。",
+choices:["肺","肝臓","心臓","腎臓","胃"],
+answer:2,
+explanation:"心臓は血液を全身に送り出すポンプの役割を担います。",
+image:null
+}];
 
-function getQuestion(){
-  const data = window.RAD_QUEST || [];
-  if(data.length === 0) return sample;
-
-  const q = data[Math.floor(Math.random() * data.length)];
-
-  return {
-    q:q.question,
-    a:q.choices,
-    correct:q.answer,
-    ex:q.explanation
-  };
-}
+let questions=Array.isArray(window.RAD_QUEST)&&window.RAD_QUEST.length
+?window.RAD_QUEST:sampleQuestions;
+let currentQuestion=null;
 let selected=-1;
-let questions=JSON.parse(localStorage.getItem("rq_questions")||"[]");
-let mistakes=JSON.parse(localStorage.getItem("rq_mistakes")||"[]");
-function save(){
-localStorage.setItem("rq_questions",JSON.stringify(questions));
-localStorage.setItem("rq_mistakes",JSON.stringify(mistakes));
-update();
+let pool=[];
+let position=0;
+let mode="normal";
+
+function read(key){
+try{return JSON.parse(localStorage.getItem(key))||[]}
+catch(e){return []}
 }
-function update(){
-let n=questions.length;
-let correct=questions.filter(x=>x.ok).length;
-document.getElementById("total").textContent="回答数："+n+"問";
-document.getElementById("rate").textContent="正答率："+(n?Math.round(correct/n*100):0)+"%";
+function save(key,value){
+try{localStorage.setItem(key,JSON.stringify(value))}
+catch(e){}
+}
+function esc(s){
+return String(s??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
 }
 function home(){
-document.getElementById("content").innerHTML=
-"<h2>学習ホーム</h2><p>演習メニューから学習を始めよう！</p>";
+document.getElementById("home").hidden=false;
+document.getElementById("screen").hidden=true;
 }
-function showQuiz(){
-selected=-1;
-const current=getQuestion();
-
-let c=document.getElementById("content");
-c.innerHTML="<h2>通常演習</h2><p>"+current.q+"</p><div id='opts'></div><button class='primary' onclick='judge()'>回答する</button><div id='result'></div>";
-
-current.a.forEach((a,i)=>{
-let b=document.createElement("button");
-b.className="option";
-b.textContent=(i+1)+". "+a;
-b.onclick=()=>{
-selected=i;
-document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
-b.classList.add("selected");
-};
-document.getElementById("opts").appendChild(b);
-});
-
-window.currentQuestion=current;
+function screen(html){
+document.getElementById("home").hidden=true;
+const s=document.getElementById("screen");
+s.hidden=false;s.innerHTML=html;
 }
-selected=-1;
-let c=document.getElementById("content");
-c.innerHTML="<h2>通常演習</h2><p class='small'>サンプル問題・本番データではありません</p><p>"+sample.q+"</p><div id='opts'></div><button class='primary' onclick='judge()'>回答する</button><div id='result'></div>";
-sample.a.forEach((a,i)=>{
-let b=document.createElement("button");
-b.className="option";
-b.textContent=(i+1)+". "+a;
-b.onclick=()=>{
-selected=i;
-document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
-b.classList.add("selected");
-};
-document.getElementById("opts").appendChild(b);
-});
-  
-window.currentQuestion=current;
+function startQuiz(list=questions,type="normal"){
+if(!list.length){screen("<h2>問題がありません</h2><button onclick='home()'>戻る</button>");return}
+pool=list.slice();position=0;mode=type;showQuestion();
 }
-function judge(){
-if(selected<0){
-alert("選択肢を選んでね");
+function startQuiz(){
+startQuizWith(questions,"normal");
+}
+function startQuizWith(list,type){
+if(!list.length){screen("<h2>問題がありません</h2><button onclick='home()'>戻る</button>");return}
+pool=list.slice();position=0;mode=type;showQuestion();
+}
+function showQuestion(){
+if(position>=pool.length){
+screen("<h2>演習終了！</h2><p>お疲れさまでした。</p><button onclick='home()'>メニューへ戻る</button>");
 return;
 }
-
-const current=window.currentQuestion;
-const ok=selected===current.correct;
-
-questions.push({ok});
-
-if(!ok){
-mistakes.push(current);
+currentQuestion=pool[position];selected=-1;
+const q=currentQuestion;
+const fav=read("rq_favorites").includes(q.id);
+let html=`<p class="small">${esc(q.field||"分野未設定")} / ${position+1}問目</p>
+<h3>${esc(q.question)}</h3>`;
+if(q.image)html+=`<img class="question-image" src="${esc(q.image)}" alt="問題画像">`;
+q.choices.forEach((c,i)=>{
+html+=`<button class="choice" id="choice${i}" onclick="selectChoice(${i})">${i+1}. ${esc(c)}</button>`;
+});
+html+=`<button onclick="judge()">回答する</button>
+<button class="secondary" onclick="toggleFavorite()">${fav?"★ お気に入り解除":"☆ お気に入り登録"}</button>
+<button class="secondary" onclick="home()">メニューへ戻る</button>
+<div id="result"></div>`;
+screen(html);
 }
-
-save();
-
-document.getElementById("result").innerHTML=
-"<h3>"+(ok?"正解！":"不正解")+"</h3>"+
-"<p>正解："+current.a[current.correct]+"</p>"+
-"<p>"+current.ex+"</p>"+
-"<button class='primary' onclick='showQuiz()'>次の問題</button>";
+function selectChoice(i){
+selected=i;
+currentQuestion.choices.forEach((c,n)=>{
+const b=document.getElementById("choice"+n);
+if(b)b.classList.toggle("selected",n===i);
+});
+}
+function judge(){
+if(selected<0){alert("選択肢を選んでください");return}
+const q=currentQuestion;
+const correct=selected===Number(q.answer);
+let history=read("rq_history");
+history.push({id:q.id,correct:correct});
+save("rq_history",history);
+let mistakes=read("rq_mistakes");
+if(correct)mistakes=mistakes.filter(id=>id!==q.id);
+else if(!mistakes.includes(q.id))mistakes.push(q.id);
+save("rq_mistakes",mistakes);
+const result=document.getElementById("result");
+result.innerHTML=`<h3>${correct?"正解！":"不正解"}</h3>
+<p>正解：${Number(q.answer)+1}. ${esc(q.choices[q.answer])}</p>
+<p>${esc(q.explanation||"解説はありません。")}</p>
+<button onclick="nextQuestion()">次の問題へ</button>`;
+}
+function nextQuestion(){position++;showQuestion()}
+function toggleFavorite(){
+const q=currentQuestion;
+let f=read("rq_favorites");
+if(f.includes(q.id))f=f.filter(id=>id!==q.id);
+else f.push(q.id);
+save("rq_favorites",f);
+showQuestion();
 }
 function showYears(){
-document.getElementById("content").innerHTML=
-"<h2>年度別演習</h2><p>収録予定：第69回〜第78回</p><p>過去問データはこれから追加します。</p>";
+const years=[...new Set(questions.map(q=>q.year).filter(Boolean))].sort((a,b)=>b-a);
+let html="<h2>年度別演習</h2>";
+if(!years.length)html+="<p>年度別の問題はまだ収録されていません。</p>";
+years.forEach(y=>html+=`<button onclick="showYear(${Number(y)})">${esc(y)}年</button>`);
+html+="<button class='secondary' onclick='home()'>戻る</button>";
+screen(html);
+}
+function showYear(y){
+startQuizWith(questions.filter(q=>Number(q.year)===Number(y)),"year");
 }
 function showReview(){
-document.getElementById("content").innerHTML=
-"<h2>間違い復習</h2><p>間違えた問題："+mistakes.length+"問</p><p>復習用問題データを追加予定です。</p>";
+const ids=read("rq_mistakes");
+const list=questions.filter(q=>ids.includes(q.id));
+if(!list.length){screen("<h2>間違い復習</h2><p>復習する問題はありません。</p><button onclick='home()'>戻る</button>");return}
+startQuizWith(list,"review");
+}
+function showFavorites(){
+const ids=read("rq_favorites");
+const list=questions.filter(q=>ids.includes(q.id));
+if(!list.length){screen("<h2>お気に入り</h2><p>登録した問題はありません。</p><button onclick='home()'>戻る</button>");return}
+startQuizWith(list,"favorite");
 }
 function showStats(){
-let n=questions.length;
-let correct=questions.filter(x=>x.ok).length;
-document.getElementById("content").innerHTML=
-"<h2>学習成績</h2><p>回答数："+n+"問</p><p>正解数："+correct+"問</p><p>正答率："+(n?Math.round(correct/n*100):0)+"%</p>";
+const h=read("rq_history");
+const correct=h.filter(x=>x.correct).length;
+const rate=h.length?Math.round(correct/h.length*100):0;
+screen(`<h2>学習成績</h2>
+<p>回答数：${h.length}問</p>
+<p>正解数：${correct}問</p>
+<p>正答率：${rate}%</p>
+<p>間違い問題：${read("rq_mistakes").length}問</p>
+<button onclick="home()">戻る</button>`);
 }
-update();
+home();
 </script>
 <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .catch(error => console.error("登録失敗:", error));
-  });
+if("serviceWorker" in navigator){
+window.addEventListener("load",()=>{
+navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+});
 }
-</script>
-</body>
-</html>
-
 </script>
 </body>
 </html>
