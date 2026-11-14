@@ -1,0 +1,12 @@
+
+{
+  "name": "RAD-QUEST",
+  "short_name": "RAD-QUEST",
+  "description": "診療放射線技師国家試験対策アプリ",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f9",
+  "theme_color": "#17365d",
+  "lang": "ja"
+}
