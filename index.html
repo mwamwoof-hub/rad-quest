@@ -71,6 +71,20 @@ a:["ベクレル","グレイ","シーベルト","クーロン","カンデラ"],
 correct:1,
 ex:"吸収線量の単位はグレイ（Gy）です。"
 };
+
+function getQuestion(){
+  const data = window.RAD_QUEST || [];
+  if(data.length === 0) return sample;
+
+  const q = data[Math.floor(Math.random() * data.length)];
+
+  return {
+    q:q.question,
+    a:q.choices,
+    correct:q.answer,
+    ex:q.explanation
+  };
+}
 let selected=-1;
 let questions=JSON.parse(localStorage.getItem("rq_questions")||"[]");
 let mistakes=JSON.parse(localStorage.getItem("rq_mistakes")||"[]");
@@ -91,6 +105,26 @@ document.getElementById("content").innerHTML=
 }
 function showQuiz(){
 selected=-1;
+const current=getQuestion();
+
+let c=document.getElementById("content");
+c.innerHTML="<h2>通常演習</h2><p>"+current.q+"</p><div id='opts'></div><button class='primary' onclick='judge()'>回答する</button><div id='result'></div>";
+
+current.a.forEach((a,i)=>{
+let b=document.createElement("button");
+b.className="option";
+b.textContent=(i+1)+". "+a;
+b.onclick=()=>{
+selected=i;
+document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
+b.classList.add("selected");
+};
+document.getElementById("opts").appendChild(b);
+});
+
+window.currentQuestion=current;
+}
+selected=-1;
 let c=document.getElementById("content");
 c.innerHTML="<h2>通常演習</h2><p class='small'>サンプル問題・本番データではありません</p><p>"+sample.q+"</p><div id='opts'></div><button class='primary' onclick='judge()'>回答する</button><div id='result'></div>";
 sample.a.forEach((a,i)=>{
@@ -104,15 +138,31 @@ b.classList.add("selected");
 };
 document.getElementById("opts").appendChild(b);
 });
+  
+window.currentQuestion=current;
 }
 function judge(){
-if(selected<0){alert("選択肢を選んでね");return}
-let ok=selected===sample.correct;
+if(selected<0){
+alert("選択肢を選んでね");
+return;
+}
+
+const current=window.currentQuestion;
+const ok=selected===current.correct;
+
 questions.push({ok});
-if(!ok)mistakes.push(sample);
+
+if(!ok){
+mistakes.push(current);
+}
+
 save();
+
 document.getElementById("result").innerHTML=
-"<h3>"+(ok?"正解！":"不正解")+"</h3><p>正解："+sample.a[sample.correct]+"</p><p>"+sample.ex+"</p><button class='primary' onclick='showQuiz()'>もう一度演習</button>";
+"<h3>"+(ok?"正解！":"不正解")+"</h3>"+
+"<p>正解："+current.a[current.correct]+"</p>"+
+"<p>"+current.ex+"</p>"+
+"<button class='primary' onclick='showQuiz()'>次の問題</button>";
 }
 function showYears(){
 document.getElementById("content").innerHTML=
