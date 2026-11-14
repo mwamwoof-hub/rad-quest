@@ -7,41 +7,197 @@
 <meta name="theme-color" content="#17365d">
 <link rel="manifest" href="./manifest.json">
 <title>RAD-QUEST</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f5f9;color:#243247;font-family:sans-serif;padding-bottom:85px}
-header{background:#17365d;color:white;padding:22px 16px;text-align:center}
-header h1{margin:0;font-size:26px;letter-spacing:1px}
-header p{margin:7px 0 0;font-size:13px}
-main{max-width:650px;margin:auto;padding:16px}
-.card{background:white;border-radius:14px;padding:18px;margin-bottom:15px;box-shadow:0 2px 9px #0000000d}
-h2{font-size:19px;margin:0 0 15px;color:#17365d}
+
+html,body{
+  margin:0;
+  background:#f3f5f9;
+  color:#243247;
+  font-family:sans-serif;
+  overscroll-behavior-y:none;
+}
+
+body{padding-bottom:85px}
+
+header{
+  background:#17365d;
+  color:white;
+  padding:22px 16px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:26px;
+  letter-spacing:1px;
+}
+
+header p{
+  margin:7px 0 0;
+  font-size:13px;
+}
+
+main{
+  max-width:650px;
+  margin:auto;
+  padding:16px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 2px 9px #0000000d;
+}
+
+h2{
+  font-size:19px;
+  margin:0 0 15px;
+  color:#17365d;
+}
+
 h3{font-size:17px}
-.welcome{background:linear-gradient(135deg,#17365d,#28628c);color:white}
-.welcome h2{color:white;font-size:21px}
-.welcome p{font-size:14px;line-height:1.7;margin-bottom:0}
-.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.menu-button{background:#eaf0f8;color:#17365d;border:0;border-radius:11px;padding:17px 8px;font-size:14px;font-weight:bold;min-height:78px}
-.menu-button:active{background:#d6e4f3}
-.menu-button span{display:block;font-size:22px;margin-bottom:7px}
+
+.welcome{
+  background:linear-gradient(135deg,#17365d,#28628c);
+  color:white;
+}
+
+.welcome h2{
+  color:white;
+  font-size:21px;
+}
+
+.welcome p{
+  font-size:14px;
+  line-height:1.7;
+  margin-bottom:0;
+}
+
+.menu-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.menu-button{
+  background:#eaf0f8;
+  color:#17365d;
+  border:0;
+  border-radius:11px;
+  padding:17px 8px;
+  font-size:14px;
+  font-weight:bold;
+  min-height:78px;
+}
+
+.menu-button span{
+  display:block;
+  font-size:22px;
+  margin-bottom:7px;
+}
+
 button{cursor:pointer}
-.action{width:100%;border:0;border-radius:9px;padding:13px;background:#17365d;color:white;font-size:15px;margin:5px 0}
-.secondary{background:#e7edf5;color:#17365d}
-.choice{width:100%;border:0;border-radius:9px;padding:13px;background:#edf1f6;color:#243247;text-align:left;font-size:15px;margin:5px 0}
-.choice.selected{background:#d4e8f5;outline:2px solid #2877a8}
-.small{font-size:13px;color:#64748b}
-#result{line-height:1.7;margin-top:15px}
-.question-image{max-width:100%;height:auto;display:block;margin:12px auto}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #dce3ec;display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:10}
-.bottom-nav button{border:0;background:none;color:#64748b;font-size:12px;padding:5px;flex:1}
-.bottom-nav button span{display:block;font-size:20px;margin-bottom:3px}
-.bottom-nav button.active{color:#17365d;font-weight:bold}
-.stat-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #edf0f4;font-size:14px}
-html, body {
-  overscroll-behavior-y: none;
+
+.action{
+  width:100%;
+  border:0;
+  border-radius:9px;
+  padding:13px;
+  background:#17365d;
+  color:white;
+  font-size:15px;
+  margin:5px 0;
+}
+
+.secondary{
+  background:#e7edf5;
+  color:#17365d;
+}
+
+.choice{
+  width:100%;
+  border:0;
+  border-radius:9px;
+  padding:13px;
+  background:#edf1f6;
+  color:#243247;
+  text-align:left;
+  font-size:15px;
+  margin:5px 0;
+}
+
+.choice.selected{
+  background:#d4e8f5;
+  outline:2px solid #2877a8;
+}
+
+button:disabled{opacity:.55}
+
+.small{
+  font-size:13px;
+  color:#64748b;
+}
+
+#result{
+  line-height:1.7;
+  margin-top:15px;
+  scroll-margin-top:15px;
+}
+
+.question-image{
+  max-width:100%;
+  height:auto;
+  display:block;
+  margin:12px auto;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid #dce3ec;
+  display:flex;
+  justify-content:space-around;
+  padding:8px 3px calc(8px + env(safe-area-inset-bottom));
+  z-index:10;
+}
+
+.bottom-nav button{
+  border:0;
+  background:none;
+  color:#64748b;
+  font-size:12px;
+  padding:5px;
+  flex:1;
+}
+
+.bottom-nav button span{
+  display:block;
+  font-size:20px;
+  margin-bottom:3px;
+}
+
+.bottom-nav button.active{
+  color:#17365d;
+  font-weight:bold;
+}
+
+.stat-row{
+  display:flex;
+  justify-content:space-between;
+  padding:9px 0;
+  border-bottom:1px solid #edf0f4;
+  font-size:14px;
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -50,7 +206,9 @@ html, body {
 </header>
 
 <main>
+
 <section id="home">
+
 <div class="card welcome">
 <h2>学習ホーム</h2>
 <strong>国家試験合格を目指そう！</strong>
@@ -59,44 +217,89 @@ html, body {
 
 <div class="card">
 <h2>演習メニュー</h2>
+
 <div class="menu-grid">
-<button class="menu-button" onclick="startQuiz()"><span>📝</span>通常演習</button>
-<button class="menu-button" onclick="showYears()"><span>📚</span>年度別演習</button>
-<button class="menu-button" onclick="startQuiz()"><span>⏱️</span>模擬試験</button>
-<button class="menu-button" onclick="showReview()"><span>🔁</span>間違い復習</button>
-<button class="menu-button" onclick="showFavorites()"><span>⭐</span>お気に入り</button>
-<button class="menu-button" onclick="showStats()"><span>📊</span>学習成績</button>
+<button class="menu-button" onclick="startQuiz()">
+<span>📝</span>通常演習
+</button>
+
+<button class="menu-button" onclick="showYears()">
+<span>📚</span>年度別演習
+</button>
+
+<button class="menu-button" onclick="startQuiz()">
+<span>⏱️</span>模擬試験
+</button>
+
+<button class="menu-button" onclick="showReview()">
+<span>🔁</span>間違い復習
+</button>
+
+<button class="menu-button" onclick="showFavorites()">
+<span>⭐</span>お気に入り
+</button>
+
+<button class="menu-button" onclick="showStats()">
+<span>📊</span>学習成績
+</button>
 </div>
+
 <p class="small">※模擬試験は現在、通常演習として動作します。</p>
 </div>
 
 <div class="card">
 <h2>学習状況</h2>
-<div class="stat-row"><span>これまでの回答数</span><strong id="homeAnswers">0問</strong></div>
-<div class="stat-row"><span>正答率</span><strong id="homeRate">0%</strong></div>
-<div class="stat-row"><span>復習する問題</span><strong id="homeMistakes">0問</strong></div>
+<div class="stat-row">
+<span>これまでの回答数</span>
+<strong id="homeAnswers">0問</strong>
+</div>
+<div class="stat-row">
+<span>正答率</span>
+<strong id="homeRate">0%</strong>
+</div>
+<div class="stat-row">
+<span>復習する問題</span>
+<strong id="homeMistakes">0問</strong>
+</div>
 </div>
 
 <div class="card">
 <h2>収録問題について</h2>
-<p class="small">現在は動作確認用のサンプル問題を含みます。実際の国家試験問題は、確認した問題から順次追加していきます。</p>
+<p class="small">
+現在は動作確認用のサンプル問題を含みます。
+実際の国家試験問題は、確認した問題から順次追加していきます。
+</p>
 </div>
+
 </section>
 
 <section id="screen" class="card" hidden></section>
+
 </main>
 
 <nav class="bottom-nav">
-<button class="active" id="navHome" onclick="home()"><span>⌂</span>ホーム</button>
-<button id="navQuiz" onclick="startQuiz()"><span>📝</span>演習</button>
-<button id="navReview" onclick="showReview()"><span>🔁</span>復習</button>
-<button id="navStats" onclick="showStats()"><span>📊</span>成績</button>
+<button class="active" id="navHome" onclick="home()">
+<span>⌂</span>ホーム
+</button>
+<button id="navQuiz" onclick="startQuiz()">
+<span>📝</span>演習
+</button>
+<button id="navReview" onclick="showReview()">
+<span>🔁</span>復習
+</button>
+<button id="navStats" onclick="showStats()">
+<span>📊</span>成績
+</button>
 </nav>
 
 <script src="./questions.js"></script>
+
 <script>
 const sampleQuestions=[{
-id:"sample-001",year:2025,session:"サンプル",number:1,
+id:"sample-001",
+year:2025,
+session:"サンプル",
+number:1,
 field:"基礎医学",
 question:"【動作確認用】人体で血液を全身に送り出す臓器はどれか。",
 choices:["肺","肝臓","心臓","腎臓","胃"],
@@ -105,189 +308,351 @@ explanation:"心臓は血液を全身に送り出すポンプの役割を担い�
 image:null
 }];
 
-const questions=Array.isArray(window.RAD_QUEST)&&window.RAD_QUEST.length
-?window.RAD_QUEST:sampleQuestions;
+const questions=
+Array.isArray(window.RAD_QUEST)&&window.RAD_QUEST.length
+?window.RAD_QUEST
+:sampleQuestions;
 
 let currentQuestion=null;
-let selected=-1;
+let selected=[];
 let pool=[];
 let position=0;
 
 function read(key){
-try{return JSON.parse(localStorage.getItem(key))||[]}
-catch(e){return []}
+try{
+return JSON.parse(localStorage.getItem(key))||[];
+}catch(e){
+return [];
 }
+}
+
 function save(key,value){
-try{localStorage.setItem(key,JSON.stringify(value))}
-catch(e){}
+try{
+localStorage.setItem(key,JSON.stringify(value));
+}catch(e){}
 }
+
 function esc(s){
 return String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
 }[c]));
 }
+
 function setNav(id){
 ["navHome","navQuiz","navReview","navStats"].forEach(x=>{
 document.getElementById(x).classList.toggle("active",x===id);
 });
 }
+
 function home(){
 document.getElementById("home").hidden=false;
 document.getElementById("screen").hidden=true;
 setNav("navHome");
 updateHome();
+window.scrollTo({top:0,behavior:"smooth"});
 }
+
 function screen(html,nav){
 document.getElementById("home").hidden=true;
 const s=document.getElementById("screen");
 s.hidden=false;
 s.innerHTML=html;
 setNav(nav||"navQuiz");
+window.scrollTo({top:0,behavior:"smooth"});
 }
+
 function updateHome(){
 const h=read("rq_history");
 const correct=h.filter(x=>x.correct).length;
+
 document.getElementById("homeAnswers").textContent=h.length+"問";
-document.getElementById("homeRate").textContent=(h.length?Math.round(correct/h.length*100):0)+"%";
-document.getElementById("homeMistakes").textContent=read("rq_mistakes").length+"問";
+document.getElementById("homeRate").textContent=
+(h.length?Math.round(correct/h.length*100):0)+"%";
+
+document.getElementById("homeMistakes").textContent=
+read("rq_mistakes").length+"問";
 }
+
 function startQuiz(){
 startQuizWith(questions,"normal");
 }
+
 function startQuizWith(list,type){
 if(!list.length){
-screen("<h2>問題がありません</h2><p>この項目の問題はまだ収録されていません。</p><button class='action secondary' onclick='home()'>戻る</button>");
+screen(
+"<h2>問題がありません</h2>"+
+"<p>この項目の問題はまだ収録されていません。</p>"+
+"<button class='action secondary' onclick='home()'>戻る</button>"
+);
 return;
 }
+
 pool=list.slice();
 position=0;
 showQuestion();
 }
+
 function showQuestion(){
+
 if(position>=pool.length){
-screen("<h2>演習終了！</h2><p>お疲れさまでした。</p><button class='action' onclick='home()'>ホームへ戻る</button>");
+screen(
+"<h2>演習終了！</h2>"+
+"<p>お疲れさまでした。</p>"+
+"<button class='action' onclick='home()'>ホームへ戻る</button>"
+);
 return;
 }
+
 currentQuestion=pool[position];
-selected=-1;
+selected=[];
+
 const q=currentQuestion;
 const fav=read("rq_favorites").includes(q.id);
-let html=`<p class="small">${esc(q.field||"分野未設定")} / ${position+1}問目・全${pool.length}問</p>
-<h3>${esc(q.question)}</h3>`;
-if(q.image)html+=`<img class="question-image" src="${esc(q.image)}" alt="問題画像">`;
+const multi=Array.isArray(q.answer);
+
+let html=
+`<p class="small">
+${esc(q.field||"分野未設定")} /
+${position+1}問目・全${pool.length}問
+</p>
+<h3>${esc(q.question)}</h3>
+<p class="small">
+${multi?"正しい選択肢をすべて選んでください":"正しいものを1つ選んでください"}
+</p>`;
+
+if(q.image){
+html+=`<img class="question-image" src="${esc(q.image)}" alt="問題画像">`;
+}
+
 q.choices.forEach((c,i)=>{
-html+=`<button class="choice" id="choice${i}" onclick="selectChoice(${i})">${i+1}. ${esc(c)}</button>`;
+html+=
+`<button class="choice" id="choice${i}"
+onclick="selectChoice(${i})">
+${i+1}. ${esc(c)}
+</button>`;
 });
-html+=`<button class="action" id="answerButton" onclick="judge()">回答する</button>
-<button class="action secondary" onclick="toggleFavorite()">${fav?"★ お気に入り解除":"☆ お気に入り登録"}</button>
-<button class="action secondary" onclick="home()">ホームへ戻る</button>
+
+html+=
+`<button class="action" id="answerButton" onclick="judge()">
+回答する
+</button>
+<button class="action secondary" onclick="toggleFavorite()">
+${fav?"★ お気に入り解除":"☆ お気に入り登録"}
+</button>
+<button class="action secondary" onclick="home()">
+ホームへ戻る
+</button>
 <div id="result"></div>`;
+
 screen(html,"navQuiz");
 }
+
 function selectChoice(i){
-selected=i;
+
+const multi=Array.isArray(currentQuestion.answer);
+
+if(multi){
+if(selected.includes(i)){
+selected=selected.filter(x=>x!==i);
+}else{
+selected.push(i);
+}
+}else{
+selected=[i];
+}
+
 currentQuestion.choices.forEach((c,n)=>{
 const b=document.getElementById("choice"+n);
-if(b)b.classList.toggle("selected",n===i);
+if(b){
+b.classList.toggle("selected",selected.includes(n));
+}
 });
 }
 
 function judge(){
-  if(selected<0){
-    alert("選択肢を選んでください");
-    return;
-  }
 
-  const q=currentQuestion;
-  const correct=selected===Number(q.answer);
-
-  const h=read("rq_history");
-  h.push({id:q.id,correct:correct});
-  save("rq_history",h);
-
-  let mistakes=read("rq_mistakes");
-  if(correct) mistakes=mistakes.filter(id=>id!==q.id);
-  else if(!mistakes.includes(q.id)) mistakes.push(q.id);
-  save("rq_mistakes",mistakes);
-
-  document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
-  document.getElementById("answerButton").disabled=true;
-
-  document.getElementById("result").innerHTML=
-  `<h3>${correct?"正解！":"不正解"}</h3>
-  <p>正解：${Number(q.answer)+1}. ${esc(q.choices[q.answer])}</p>
-  <p>${esc(q.explanation||"解説はありません。")}</p>
-  <button class="action" onclick="nextQuestion()">次の問題へ</button>`;
-
-  updateHome();
-
-  setTimeout(()=>{
-    document.getElementById("result").scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-  },100);
+if(selected.length===0){
+alert("選択肢を選んでください");
+return;
 }
+
+const q=currentQuestion;
+const answers=Array.isArray(q.answer)?q.answer:[q.answer];
+
+const expected=answers.map(Number).sort((a,b)=>a-b);
+const actual=selected.map(Number).sort((a,b)=>a-b);
+
+const correct=
+actual.length===expected.length&&
+actual.every((x,i)=>x===expected[i]);
+
+const h=read("rq_history");
+h.push({id:q.id,correct:correct});
+save("rq_history",h);
+
+let mistakes=read("rq_mistakes");
+
+if(correct){
+mistakes=mistakes.filter(id=>id!==q.id);
+}else if(!mistakes.includes(q.id)){
+mistakes.push(q.id);
+}
+
+save("rq_mistakes",mistakes);
+
+document.querySelectorAll(".choice").forEach(b=>{
+b.disabled=true;
+});
+
+document.getElementById("answerButton").disabled=true;
+
+const answerText=answers.map(n=>
+`${Number(n)+1}. ${esc(q.choices[n])}`
+).join("<br>");
+
+document.getElementById("result").innerHTML=
+`<h3>${correct?"正解！":"不正解"}</h3>
+<p>正解：<br>${answerText}</p>
+<p>${esc(q.explanation||"解説はありません。")}</p>
+<button class="action" onclick="nextQuestion()">次の問題へ</button>`;
+
+updateHome();
+
+setTimeout(()=>{
+const result=document.getElementById("result");
+if(result){
+result.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+}
+},100);
+}
+
 function nextQuestion(){
-  position++;
-  showQuestion();
+position++;
+showQuestion();
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 }
+
 function toggleFavorite(){
+
 const q=currentQuestion;
 let f=read("rq_favorites");
-if(f.includes(q.id))f=f.filter(id=>id!==q.id);
-else f.push(q.id);
+
+if(f.includes(q.id)){
+f=f.filter(id=>id!==q.id);
+}else{
+f.push(q.id);
+}
+
 save("rq_favorites",f);
 showQuestion();
 }
+
 function showYears(){
-const years=[...new Set(questions.map(q=>q.year).filter(Boolean))].sort((a,b)=>b-a);
+
+const years=[
+...new Set(questions.map(q=>q.year).filter(Boolean))
+].sort((a,b)=>b-a);
+
 let html="<h2>年度別演習</h2>";
-if(!years.length)html+="<p>年度別の問題はまだ収録されていません。</p>";
-years.forEach(y=>html+=`<button class="action" onclick="showYear(${Number(y)})">${esc(y)}年</button>`);
+
+if(!years.length){
+html+="<p>年度別の問題はまだ収録されていません。</p>";
+}
+
+years.forEach(y=>{
+html+=
+`<button class="action" onclick="showYear(${Number(y)})">
+${esc(y)}年
+</button>`;
+});
+
 html+="<button class='action secondary' onclick='home()'>戻る</button>";
+
 screen(html,"navQuiz");
 }
+
 function showYear(y){
-startQuizWith(questions.filter(q=>Number(q.year)===Number(y)),"year");
+startQuizWith(
+questions.filter(q=>Number(q.year)===Number(y)),
+"year"
+);
 }
+
 function showReview(){
+
 const ids=read("rq_mistakes");
 const list=questions.filter(q=>ids.includes(q.id));
+
 if(!list.length){
-screen("<h2>間違い復習</h2><p>復習する問題はありません。</p><button class='action secondary' onclick='home()'>戻る</button>","navReview");
+screen(
+"<h2>間違い復習</h2>"+
+"<p>復習する問題はありません。</p>"+
+"<button class='action secondary' onclick='home()'>戻る</button>",
+"navReview"
+);
 return;
 }
+
 startQuizWith(list,"review");
 setNav("navReview");
 }
+
 function showFavorites(){
+
 const ids=read("rq_favorites");
 const list=questions.filter(q=>ids.includes(q.id));
+
 if(!list.length){
-screen("<h2>お気に入り</h2><p>登録した問題はありません。</p><button class='action secondary' onclick='home()'>戻る</button>");
+screen(
+"<h2>お気に入り</h2>"+
+"<p>登録した問題はありません。</p>"+
+"<button class='action secondary' onclick='home()'>戻る</button>"
+);
 return;
 }
+
 startQuizWith(list,"favorite");
 }
+
 function showStats(){
+
 const h=read("rq_history");
 const correct=h.filter(x=>x.correct).length;
 const rate=h.length?Math.round(correct/h.length*100):0;
-screen(`<h2>学習成績</h2>
-<div class="stat-row"><span>回答数</span><strong>${h.length}問</strong></div>
-<div class="stat-row"><span>正解数</span><strong>${correct}問</strong></div>
-<div class="stat-row"><span>正答率</span><strong>${rate}%</strong></div>
-<div class="stat-row"><span>間違い問題</span><strong>${read("rq_mistakes").length}問</strong></div>
-<button class="action secondary" onclick="home()">戻る</button>`,"navStats");
+
+screen(
+`<h2>学習成績</h2>
+<div class="stat-row">
+<span>回答数</span><strong>${h.length}問</strong>
+</div>
+<div class="stat-row">
+<span>正解数</span><strong>${correct}問</strong>
+</div>
+<div class="stat-row">
+<span>正答率</span><strong>${rate}%</strong>
+</div>
+<div class="stat-row">
+<span>間違い問題</span><strong>${read("rq_mistakes").length}問</strong>
+</div>
+<button class="action secondary" onclick="home()">戻る</button>`,
+"navStats"
+);
 }
+
 home();
 </script>
+
 <script>
 if("serviceWorker" in navigator){
 window.addEventListener("load",()=>{
@@ -295,5 +660,28 @@ navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
 });
 }
 </script>
+
+<script>
+let touchStartY=0;
+
+document.addEventListener("touchstart",function(e){
+if(e.touches.length){
+touchStartY=e.touches[0].clientY;
+}
+},{passive:true});
+
+document.addEventListener("touchmove",function(e){
+if(!e.touches.length)return;
+
+const currentY=e.touches[0].clientY;
+const movingDown=currentY>touchStartY;
+const atTop=window.scrollY<=0;
+
+if(movingDown&&atTop){
+e.preventDefault();
+}
+},{passive:false});
+</script>
+
 </body>
 </html>
