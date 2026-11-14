@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "rad-quest-v1";
+const CACHE_NAME = "rad-quest-v2";
 
 const FILES = [
   "./",
